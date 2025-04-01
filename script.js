@@ -1,29 +1,26 @@
-const API_URL = "https://your-backend-app.vercel.app/api/convert";
+// Replace with your ACTUAL backend URL
+const API_URL = "https://backend-five-umber-71.vercel.app/api/convert";
 
 document.getElementById('upload').addEventListener('change', async (e) => {
   const file = e.target.files[0];
-  if (!file) return;
-
-  // Show loading
-  const loading = document.createElement('div');
-  loading.className = 'loading';
-  loading.textContent = 'Converting to Ghibli style...';
-  document.body.appendChild(loading);
-
-  const formData = new FormData();
-  formData.append('image', file);
+  const loading = document.querySelector('.loading');
+  
+  loading.style.display = 'block'; // Show loader
 
   try {
+    const formData = new FormData();
+    formData.append('image', file);
+
     const response = await fetch(API_URL, {
       method: 'POST',
       body: formData
     });
     
     const result = await response.json();
-    document.getElementById('result').src = result.url;
+    document.getElementById('ghibliImage').src = result.url;
   } catch (error) {
-    alert('Error converting image!');
+    alert('Conversion failed! Please try another image.');
   } finally {
-    loading.remove();
+    loading.style.display = 'none'; // Hide loader
   }
 });
